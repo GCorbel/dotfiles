@@ -77,4 +77,11 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
+
+export PYENV_ROOT="${HOME}/.pyenv"
+
+if [ -d "${PYENV_ROOT}" ]; then
+  export PATH="${PYENV_ROOT}/bin:${PATH}"
+  eval "$(pyenv init -)"
+fi
 export EDITOR=vim

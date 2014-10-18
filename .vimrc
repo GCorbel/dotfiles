@@ -85,39 +85,42 @@ set rnu
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+" call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'tomtom/tcomment_vim'
-Plugin 'rling/ag.vim'
+Plugin 'rking/ag.vim'
 Plugin 'vim-scripts/ctags.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'vim-scripts/ruby-matchit'
-Plugin 'scrooloose/syntastic'
-Plugin 'kikijmp/tslime.vim'
+Plugin 'jgdavey/tslime.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'tpope/vim-dispatch'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-fugitive'
-Plugin 'svenfuchs/i18n'
+Plugin 'stefanoverna/vim-i18n'
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-rake'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'slim-template/vim-slim'
 Plugin 'honza/vim-snippets'
 Plugin 'tpope/vim-surround'
+Plugin 'kana/vim-textobj-user'
 Plugin 'nelstrom/vim-textobj-rubyblock'
-Plugin 'nelstrom/vim-textobj-user'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'wincent/Command-T'
+Plugin 'benmills/vimux'
 Plugin 'tpope/vim-bundler'
 Plugin 'tpope/rbenv-ctags'
 Plugin 'lordm/vim-browser-reload-linux'
-
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'bling/vim-airline'
+Plugin 'scrooloose/nerdtree'
+Plugin 'wikitopian/hardmode'
+Plugin 'scrooloose/syntastic'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -526,18 +529,18 @@ function! ShowRoutes()
   :normal dd
 endfunction
 map <leader>gR :call ShowRoutes()<cr>
-map <leader>gv :CommandTFlush<cr>\|:CommandT app/views<cr>
-map <leader>gc :CommandTFlush<cr>\|:CommandT app/controllers<cr>
-map <leader>gm :CommandTFlush<cr>\|:CommandT app/models<cr>
-map <leader>gh :CommandTFlush<cr>\|:CommandT app/helpers<cr>
-map <leader>gl :CommandTFlush<cr>\|:CommandT lib<cr>
-map <leader>gp :CommandTFlush<cr>\|:CommandT public<cr>
-map <leader>ga :CommandTFlush<cr>\|:CommandT app/assets<cr>
-map <leader>gf :CommandTFlush<cr>\|:CommandT spec/acceptances<cr>
+map <leader>gv :CtrlP app/views<cr>
+map <leader>gc :CtrlP app/controllers<cr>
+map <leader>gm :CtrlP app/models<cr>
+map <leader>gh :CtrlP app/helpers<cr>
+map <leader>gl :CtrlP lib<cr>
+map <leader>gp :CtrlP public<cr>
+map <leader>ga :CtrlP app/assets<cr>
+map <leader>gf :CtrlP spec/acceptances<cr>
 map <leader>gg :topleft 100 :split Gemfile<cr>
-map <leader>gt :CommandTFlush<cr>\|:CommandTTag<cr>
-map <leader>f :CommandTFlush<cr>\|:CommandT<cr>
-map <leader>F :CommandTFlush<cr>\|:CommandT %%<cr>
+map <leader>gt :CtrlPTag<cr>
+map <leader>f :CtrlP<cr>
+map <leader>F :CtrlP %%<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ULTISNIPS
@@ -560,3 +563,13 @@ let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
 " BROWSER RELOAD
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 map <leader>r :w<cr>:AllBrowserReload<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" NERD TREE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map gt :NERDTreeToggle<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" CTRLP
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ctrlp_use_caching = 0
