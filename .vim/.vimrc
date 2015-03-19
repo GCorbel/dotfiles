@@ -80,9 +80,12 @@ set rnu
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vundle configuration
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" set nocompatible
+
+" set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+" call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
@@ -116,7 +119,7 @@ Plugin 'lordm/vim-browser-reload-linux'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'bling/vim-airline'
 Plugin 'scrooloose/nerdtree'
-Plugin 'kbarrette/mediummode'
+Plugin 'wikitopian/hardmode'
 Plugin 'scrooloose/syntastic'
 Plugin 'szw/vim-tags'
 Plugin 'jplaut/vim-arduino-ino'
@@ -528,19 +531,19 @@ function! ShowRoutes()
   :normal dd
 endfunction
 map <leader>gR :call ShowRoutes()<cr>
-map <leader>gv :CtrlPClearCache<cr>:CtrlP app/views<cr>
-map <leader>gc :CtrlPClearCache<cr>:CtrlP app/controllers<cr>
-map <leader>gm :CtrlPClearCache<cr>:CtrlP app/models<cr>
-map <leader>gh :CtrlPClearCache<cr>:CtrlP app/helpers<cr>
-map <leader>gl :CtrlPClearCache<cr>:CtrlP lib<cr>
-map <leader>gp :CtrlPClearCache<cr>:CtrlP public<cr>
-map <leader>ga :CtrlPClearCache<cr>:CtrlP app/assets<cr>
-map <leader>gf :CtrlPClearCache<cr>:CtrlP spec/acceptances<cr>
+map <leader>gv :CtrlP app/views<cr>
+map <leader>gc :CtrlP app/controllers<cr>
+map <leader>gm :CtrlP app/models<cr>
+map <leader>gh :CtrlP app/helpers<cr>
+map <leader>gl :CtrlP lib<cr>
+map <leader>gp :CtrlP public<cr>
+map <leader>ga :CtrlP app/assets<cr>
+map <leader>gf :CtrlP spec/acceptances<cr>
 map <leader>gg :topleft 100 :split Gemfile<cr>
-map <leader>gt :CtrlPClearCache<cr>:CtrlPTag<cr>
-map <leader>f :CtrlPClearCache<cr>:CtrlP<cr>
-map <leader>F :CtrlPClearCache<cr>:CtrlP %%<cr>
-map <leader>gs :CtrlPClearCache<cr>:CtrlP spec<cr>
+map <leader>gt :CtrlPTag<cr>
+map <leader>f :CtrlP<cr>
+map <leader>F :CtrlP %%<cr>
+map <leader>gs :CtrlP spec<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ULTISNIPS
@@ -612,3 +615,11 @@ nnoremap <F2> :call TmuxRerun()<cr>
 " zoom a vim pane, <C-w>= to re-balance
 nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
 nnoremap <leader>= :wincmd =<cr>
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" HARD MODE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
+
