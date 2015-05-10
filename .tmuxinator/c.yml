@@ -22,6 +22,6 @@ windows:
   - editor:
       layout: d378,272x70,0,0[272x49,0,0,15,272x20,0,50{150x20,0,50,16,121x20,151,50,17}]
       panes:
-        - vim
+        - nvim
         -
         - bin/rails s

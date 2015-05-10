@@ -76,6 +76,7 @@ set nojoinspaces
 set autoread
 set nu
 set rnu
+set colorcolumn=80
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vundle configuration
@@ -116,7 +117,7 @@ Plugin 'lordm/vim-browser-reload-linux'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'bling/vim-airline'
 Plugin 'scrooloose/nerdtree'
-Plugin 'kbarrette/mediummode'
+" Plugin 'kbarrette/mediummode'
 Plugin 'scrooloose/syntastic'
 Plugin 'szw/vim-tags'
 Plugin 'jplaut/vim-arduino-ino'
@@ -128,7 +129,7 @@ filetype plugin indent on    " required
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CUSTOM AUTOCMDS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd BufWritePre * :%s/\s\+$//e
+" autocmd BufWritePre * :%s/\s\+$//e
 augroup vimrcEx
   " Clear all autocmds in the group
   autocmd!
@@ -197,8 +198,7 @@ function! FocusOnFile()
   call OpenTestAlternate()
   normalh
 endfunction
-" Reload in chrome
-map <leader>l :w\|:silent !reload-chrome<cr>
+
 " Align selected lines
 vnoremap <leader>ib :!align<cr>
 
@@ -562,7 +562,7 @@ let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " BROWSER RELOAD
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader>r :w<cr>:ChromiumReload<cr>
+map <leader>r :w<cr>:FirefoxReload<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NERD TREE
