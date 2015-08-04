@@ -121,6 +121,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'szw/vim-tags'
 Plugin 'jplaut/vim-arduino-ino'
+Plugin 'mustache/vim-mustache-handlebars'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -129,7 +130,7 @@ filetype plugin indent on    " required
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CUSTOM AUTOCMDS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" autocmd BufWritePre * :%s/\s\+$//e
+autocmd BufWritePre * :%s/\s\+$//e
 augroup vimrcEx
   " Clear all autocmds in the group
   autocmd!
@@ -574,6 +575,7 @@ map gnt :NERDTreeToggle<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:syntastic_full_redraws=1
 map <leader>x :redraw!<cr>
+let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " EASYMOTION
@@ -590,6 +592,8 @@ map  N <Plug>(easymotion-prev)
 
 nmap s <Plug>(easymotion-s2)
 nmap t <Plug>(easymotion-t2)
+
+set mouse=c
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MARKS
@@ -612,3 +616,9 @@ nnoremap <F2> :call TmuxRerun()<cr>
 " zoom a vim pane, <C-w>= to re-balance
 nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
 nnoremap <leader>= :wincmd =<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" MUSTACHE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:mustache_abbreviations = 1
