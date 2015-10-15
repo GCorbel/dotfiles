@@ -97,9 +97,6 @@ if [ -d "${RBENV_ROOT}" ]; then
 fi
 export PATH="/opt/android-studio/bin:${PATH}"
 export EDITOR=vim
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
 
 export PATH="${PATH}:/opt/gradle/bin"
 
