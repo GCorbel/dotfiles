@@ -1,3 +1,5 @@
+# sudo apt-get install wget && wget https://github.com/GCorbel/dotfiles/raw/master/simple_install_script.sh -O - | sudo sh
+
 apt-get update && apt-get install -y \
   software-properties-common \
   build-essential \
