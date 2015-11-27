@@ -82,7 +82,7 @@ set colorcolumn=80
 " Vundle configuration
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " set nocompatible
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/.config/nvim/bundle/Vundle.vim
 call vundle#begin()
 
 " let Vundle manage Vundle, required
@@ -189,19 +189,6 @@ nnoremap <c-l> <c-w>l
 " Can't be bothered to understand ESC vs <c-c> in insert mode
 imap <c-c> <esc>
 nnoremap <leader><leader> <c-^>
-" Close all other windows, open a vertical split, and open this file's test
-" alternate in it.
-nnoremap <leader>s :call FocusOnFile()<cr>
-function! FocusOnFile()
-  tabnew %
-  normalv
-  normall
-  call OpenTestAlternate()
-  normalh
-endfunction
-
-" Align selected lines
-vnoremap <leader>ib :!align<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
@@ -238,67 +225,6 @@ function! RenameFile()
     endif
 endfunction
 map <leader>n :call RenameFile()<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" PROMOTE VARIABLE TO RSPEC LET
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! PromoteToLet()
-  :normal! dd
-  " :exec '?^\s*it\>'
-  :normal! P
-  :.s/\(\w\+\) = \(.*\)$/let(:\1) { \2 }/
-  :normal ==
-endfunction
-:command! PromoteToLet :call PromoteToLet()
-:map <leader>p :PromoteToLet<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" EXTRACT VARIABLE (SKETCHY)
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! ExtractVariable()
-    let name = input("Variable name: ")
-    if name == ''
-        return
-    endif
-    " Enter visual mode (not sure why this is needed since we're already in
-    " visual mode anyway)
-    normal! gv
-
-    " Replace selected text with the variable name
-    exec "normal c" . name
-    " Define the variable on the line above
-    exec "normal! O" . name . " = "
-    " Paste the original selected text to be the variable value
-    normal! $p
-endfunction
-vnoremap <leader>rv :call ExtractVariable()<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" INLINE VARIABLE (SKETCHY)
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! InlineVariable()
-    " Copy the variable under the cursor into the 'a' register
-    :let l:tmp_a = @a
-    :normal "ayiw
-    " Delete variable and equals sign
-    :normal 2daW
-    " Delete the expression into the 'b' register
-    :let l:tmp_b = @b
-    :normal "bd$
-    " Delete the remnants of the line
-    :normal dd
-    " Go to the end of the previous line so we can start our search for the
-    " usage of the variable to replace. Doing '0' instead of 'k$' doesn't
-    " work; I'm not sure why.
-    normal k$
-    " Find the next occurence of the variable
-    exec '/\<' . @a . '\>'
-    " Replace that occurence with the text we yanked
-    exec ':.s/\<' . @a . '\>/' . @b
-    :let @a = l:tmp_a
-    :let @b = l:tmp_b
-endfunction
-nnoremap <leader>ri :call InlineVariable()<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MAPS TO JUMP TO SPECIFIC COMMAND-T TARGETS AND FILES
@@ -407,106 +333,9 @@ function! RunTests(filename)
 endfunction
 
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Md5 COMMAND
-" Show the MD5 of the current buffer
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-command! -range Md5 :echo system('echo '.shellescape(join(getline(<line1>, <line2>), '\n')) . '| md5')
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" OpenChangedFiles COMMAND
-" Open a split for each dirty file in git
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! OpenChangedFiles()
-  only " Close all windows, unless they're modified
-  let status = system('git status -s | grep "^ \?\(M\|A\|UU\)" | sed "s/^.\{3\}//"')
-  let filenames = split(status, "\n")
-  exec "edit " . filenames[0]
-  for filename in filenames[1:]
-    exec "sp " . filename
-  endfor
-endfunction
-command! OpenChangedFiles :call OpenChangedFiles()
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" InsertTime COMMAND
-" Insert the current time
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-command! InsertTime :normal a<c-r>=strftime('%F %H:%M:%S.0 %z')<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" FindConditionals COMMAND
-" Start a search for conditional branches, both implicit and explicit
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-command! FindConditionals :normal /\<if\>\|\<unless\>\|\<and\>\|\<or\>\|||\|&&<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Diff tab management: open the current git diff in a tab
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-command! GdiffInTab tabedit %|vsplit|Gdiff
-nnoremap <leader>d :GdiffInTab<cr>
-nnoremap <leader>D :tabclose<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Test quickfix list management
-"
-" If the tests write a tmp/quickfix file, these mappings will navigate through
-" it
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! GetBufferList()
-  redir =>buflist
-  silent! ls
-  redir END
-  return buflist
-endfunction
-
-function! BufferIsOpen(bufname)
-  let buflist = GetBufferList()
-  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
-    if bufwinnr(bufnum) != -1
-      return 1
-    endif
-  endfor
-  return 0
-endfunction
-
-function! ToggleQuickfix()
-  if BufferIsOpen("Quickfix List")
-    cclose
-  else
-    call OpenQuickfix()
-  endif
-endfunction
-
-function! OpenQuickfix()
-  cgetfile tmp/quickfix
-  topleft cwindow
-  if &ft == "qf"
-      cc
-  endif
-endfunction
-
-nnoremap <leader>q :call ToggleQuickfix()<cr>
 nnoremap <leader>Q :cc<cr>
 nnoremap <leader>j :cnext<cr>
 nnoremap <leader>k :cprev<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" RemoveFancyCharacters COMMAND
-" Remove smart quotes, etc.
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! RemoveFancyCharacters()
-    let typo = {}
-    let typo["“"] = '"'
-    let typo["”"] = '"'
-    let typo["‘"] = "'"
-    let typo["’"] = "'"
-    let typo["–"] = '--'
-    let typo["—"] = '---'
-    let typo["…"] = '...'
-    :exe ":%s/".join(keys(typo), '\|').'/\=typo[submatch(0)]/ge'
-endfunction
-command! RemoveFancyCharacters :call RemoveFancyCharacters()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MAPS TO JUMP TO SPECIFIC COMMAND-T TARGETS AND FILES
@@ -580,7 +409,6 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " EASYMOTION
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Gif config
 map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
 
@@ -592,6 +420,13 @@ map  N <Plug>(easymotion-prev)
 
 nmap s <Plug>(easymotion-s2)
 nmap t <Plug>(easymotion-t2)
+
+map <Leader>l <Plug>(easymotion-lineforward)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map <Leader>h <Plug>(easymotion-linebackward)
+
+let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
 set mouse=c
 
@@ -628,3 +463,5 @@ let g:mustache_abbreviations = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:fugitive_git_executable = 'LANG=en_US.UTF-8 git'
+
+nnoremap <C-s> :w<cr>
