@@ -188,7 +188,7 @@ nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 " Can't be bothered to understand ESC vs <c-c> in insert mode
 imap <c-c> <esc>
-nnoremap <leader><leader> <c-^>
+nnoremap <leader><leader> b#
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
@@ -364,7 +364,7 @@ map <leader>gm :CtrlPClearCache<cr>:CtrlP app/models<cr>
 map <leader>gh :CtrlPClearCache<cr>:CtrlP app/helpers<cr>
 map <leader>gl :CtrlPClearCache<cr>:CtrlP lib<cr>
 map <leader>gp :CtrlPClearCache<cr>:CtrlP public<cr>
-map <leader>ga :CtrlPClearCache<cr>:CtrlP app/assets<cr>
+map <leader>ga :CtrlPClearCache<cr>:CtrlP app<cr>
 map <leader>gf :CtrlPClearCache<cr>:CtrlP spec/acceptances<cr>
 map <leader>gg :topleft 100 :split Gemfile<cr>
 map <leader>gt :CtrlPClearCache<cr>:CtrlPTag<cr>
@@ -464,4 +464,5 @@ let g:mustache_abbreviations = 1
 
 let g:fugitive_git_executable = 'LANG=en_US.UTF-8 git'
 
-nnoremap <C-s> :w<cr>
+nnoremap <Leader>w :w<cr>
+nnoremap <Leader>q :q<cr>
