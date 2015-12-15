@@ -1,4 +1,4 @@
-// Colemak symbols for xkb on X.Org Server 7.x
+
 // 2006-01-01 Shai Coleman, http://colemak.com/
 
 partial alphanumeric_keys
@@ -62,5 +62,4 @@ xkb_symbols "colemak" {
     key <SPCE> { [        space,        space,           space,     nobreakspace ] };
 
     include "level3(ralt_switch)"
-    include "level3(lalt_switch)"
 };
