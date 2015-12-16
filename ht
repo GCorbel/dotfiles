@@ -1,4 +1,4 @@
-
+// Colemak symbols for xkb on X.Org Server 7.x
 // 2006-01-01 Shai Coleman, http://colemak.com/
 
 partial alphanumeric_keys
@@ -34,9 +34,9 @@ xkb_symbols "colemak" {
     key <AD12> { [ bracketright,   braceright,  guillemotright,        0x100203a ] };
     key <BKSL> { [    backslash,          bar,      parenright,       asciitilde ] };
 
-    key <AC01> { [            a,            A,          dead_circumflex,           Aacute ] };
-    key <AC02> { [            r,            R,      dead_grave,       asciitilde ] };
-    key <AC03> { [            s,            S,          dead_acute,       asciitilde ] };
+    key <AC01> { [            a,            A,          agrave,          Agrave ] };
+    key <AC02> { [            r,            R,      egrave,       Egrave ] };
+    key <AC03> { [            s,            S,          eacute,       Eacute ] };
     key <AC04> { [            t,            T,      underscore, dead_doubleacute ] };
     key <AC05> { [            d,            D,  dead_diaeresis,       asciitilde ] };
     key <AC06> { [            h,            H,      colon,       asciitilde ] };
@@ -47,7 +47,7 @@ xkb_symbols "colemak" {
     key <AC11> { [   apostrophe,     quotedbl,          parenleft,           Otilde ] };
 
     key <AB01> { [            z,            Z,              ae,               AE ] };
-    key <AB02> { [            x,            X, dead_circumflex,       asciitilde ] };
+    key <AB02> { [            x,            X,      ecircumflex,       Ecircumflex ] };
     key <AB03> { [            c,            C,        ccedilla,         Ccedilla ] };
     key <AB04> { [            v,            V,              oe,               OE ] };
     key <AB05> { [            b,            B,      dead_breve,       asciitilde ] };
@@ -62,4 +62,5 @@ xkb_symbols "colemak" {
     key <SPCE> { [        space,        space,           space,     nobreakspace ] };
 
     include "level3(ralt_switch)"
+    include "level3(lalt_switch)"
 };
