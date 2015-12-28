@@ -85,9 +85,9 @@ alias ti="tmuxinator start "
 alias vi=nvim
 alias vim=nvim
 
-alias dc="docker-compose"
-alias dcr="docker-compose run"
-alias dcu="docker-compose up"
+alias dc="docker-compose `if [ -f docker-compose.local.yml ]; then; echo "-f docker-compose.local.yml"; fi;` "
+alias dcr="dc run"
+alias dcu="dc up"
 
 export RBENV_ROOT="${HOME}/.rbenv"
 
