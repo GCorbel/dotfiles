@@ -99,6 +99,7 @@ export PATH="/opt/android-studio/bin:${PATH}"
 export EDITOR=vim
 
 export PATH="${PATH}:/opt/gradle/bin"
+export PATH="${PATH}:/usr/local/bundle/bin"
 
 set -o vi
 setxkbmap -option caps:escape
