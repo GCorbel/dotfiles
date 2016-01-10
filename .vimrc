@@ -188,7 +188,7 @@ nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 " Can't be bothered to understand ESC vs <c-c> in insert mode
 imap <c-c> <esc>
-nnoremap <leader><leader> b#
+nnoremap <leader><leader> :b#<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
