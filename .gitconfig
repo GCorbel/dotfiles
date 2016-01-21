@@ -10,10 +10,12 @@
 [alias]
   a = add
   aa = add --all
-  c = checkout
-  co = commit
+  co = checkout
+  c = commit
   st = status
   br = branch
   hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
   type = cat-file -t
   dump = cat-file -p
+[core]
+	filemode = false
