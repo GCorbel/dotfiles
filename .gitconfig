@@ -11,7 +11,7 @@
   a = add
   aa = add --all
   c = checkout
-  ci = commit
+  co = commit
   st = status
   br = branch
   hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
