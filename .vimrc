@@ -80,6 +80,7 @@ set colorcolumn=80
 " Vundle configuration
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " set nocompatible
+filetype off
 set rtp+=~/.config/nvim/bundle/Vundle.vim
 call vundle#begin()
 
