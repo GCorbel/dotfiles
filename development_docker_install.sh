@@ -1,4 +1,4 @@
-# RUN apt-get install wget && wget https://github.com/GCorbel/dotfiles/raw/master/development_docker_install -O - | sh
+# RUN apt-get update && apt-get install -y wget && wget https://github.com/GCorbel/dotfiles/raw/master/development_docker_install.sh -O - | sh
 
 apt-get update && apt-get install -y \
   software-properties-common \

@@ -1,0 +1,21 @@
+[user]
+	email = guirec.corbel@gmail.com
+	name = GCorbel
+[push]
+	default = simple
+[init]
+	templatedir = ~/.git_template
+[alias]
+	ctags = !~/.git_template/hooks/ctags
+[alias]
+  a = add
+  aa = add --all
+  co = checkout
+  c = commit
+  st = status
+  br = branch
+  hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+  type = cat-file -t
+  dump = cat-file -p
+[core]
+	filemode = false
