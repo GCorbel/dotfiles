@@ -121,8 +121,11 @@ Plugin 'szw/vim-tags'
 Plugin 'jplaut/vim-arduino-ino'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'JarrodCTaylor/vim-ember-cli-test-runner'
-Plugin 'jiangmiao/auto-pairs'
+" Plugin 'jiangmiao/auto-pairs'
 Plugin 'jaymiejones86/vim-capybara'
+Plugin 'kana/vim-textobj-entire'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-unimpaired'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -189,7 +192,7 @@ nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 " Can't be bothered to understand ESC vs <c-c> in insert mode
 imap <c-c> <esc>
-nnoremap <leader><leader> :b#<cr>
+nnoremap <leader><leader> <c-^>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
@@ -339,7 +342,7 @@ let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " BROWSER RELOAD
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader>r :w<cr>:FirefoxReload<cr>
+map <leader>r :w<cr>:FirefoxReload<cr>:ChromiumReload<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NERD TREE
@@ -412,4 +415,3 @@ let g:mustache_abbreviations = 1
 let g:fugitive_git_executable = 'LANG=en_US.UTF-8 git'
 
 nnoremap <Leader>w :w<cr>
-nnoremap <Leader>q :q<cr>
