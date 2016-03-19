@@ -126,6 +126,7 @@ Plugin 'jaymiejones86/vim-capybara'
 Plugin 'kana/vim-textobj-entire'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-unimpaired'
+Plugin 'christoomey/vim-system-copy'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
