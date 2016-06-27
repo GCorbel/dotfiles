@@ -127,6 +127,7 @@ Plugin 'kana/vim-textobj-entire'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'christoomey/vim-system-copy'
+Plugin 'KabbAmine/zeavim.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -471,3 +472,19 @@ let g:mustache_abbreviations = 1
 let g:fugitive_git_executable = 'LANG=en_US.UTF-8 git'
 
 nnoremap <Leader>w :w<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ZEAL
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+nmap gzz <Plug>Zeavim
+vmap gzz <Plug>ZVVisSelection
+nmap <leader>z <Plug>ZVKeyDocset
+nmap gZ <Plug>ZVKeyDocset<CR>
+nmap gz <Plug>ZVMotion
+let g:zv_file_types = {
+            \   'python'           : 'python 3',
+            \   'javascript'       : 'javascript,ember',
+            \   'ruby'             : 'ruby,rails',
+            \   'help'             : 'vim'
+            \ }
