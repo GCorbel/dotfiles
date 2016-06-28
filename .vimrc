@@ -127,6 +127,7 @@ Plugin 'kana/vim-textobj-entire'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'christoomey/vim-system-copy'
+Plugin 'KabbAmine/zeavim.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -470,3 +471,35 @@ let g:mustache_abbreviations = 1
 let g:fugitive_git_executable = 'LANG=en_US.UTF-8 git'
 
 nnoremap <Leader>w :w<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" YCM
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" SYNTASTIC
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_javascript_checkers = ['eslint']
+let b:syntastic_javascript_eslint_exec = '/home/dougui/npm/bin/eslint'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Zeavim
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+nmap gzz <Plug>Zeavim
+vmap gzz <Plug>ZVVisSelection
+nmap <leader>z <Plug>ZVKeyDocset
+nmap gZ <Plug>ZVKeyDocset<CR>
+nmap gz <Plug>ZVMotion
+let g:zv_file_types = {
+            \   'ruby'           : 'ruby,rails',
+            \   'javascript'     : 'javascript,ember',
+            \   'help'             : 'vim'
+            \ }
