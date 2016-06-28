@@ -501,5 +501,6 @@ nmap gz <Plug>ZVMotion
 let g:zv_file_types = {
             \   'ruby'           : 'ruby,rails',
             \   'javascript'     : 'javascript,ember',
-            \   'help'             : 'vim'
+            \   'python'         : 'python 3',
+            \   'help'           : 'vim'
             \ }
