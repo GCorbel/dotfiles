@@ -28,7 +28,8 @@ mkdir -p ~/.config && \
   ln -s ~/dotfiles/.vimrc_simple ~/.config/nvim/init.vim && \
   ln -s ~/dotfiles/.tmux.conf . && \
   ln -s ~/dotfiles/.zshrc . && \
-  ln -s ~/dotfiles/.bashrc .
+  ln -s ~/dotfiles/.bashrc . && \
+  ln -s ~/dotfiles/.pryrc .
 
 rm -r ~/.config/nvim/bundle/Vundle.vim && \
   git clone https://github.com/VundleVim/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim && \

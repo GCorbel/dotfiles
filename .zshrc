@@ -89,12 +89,6 @@ alias dc="docker-compose `if [ -f docker-compose.local.yml ]; then; echo "-f doc
 alias dcr="dc run"
 alias dcu="dc up"
 
-export RBENV_ROOT="${HOME}/.rbenv"
-
-if [ -d "${RBENV_ROOT}" ]; then
-  export PATH="${RBENV_ROOT}/bin:${PATH}"
-  eval "$(rbenv init -)"
-fi
 export PATH="/opt/android-studio/bin:${PATH}"
 export EDITOR=vim
 
@@ -115,3 +109,5 @@ function zle-line-init zle-keymap-select {
 zle -N zle-line-init
 zle -N zle-keymap-select
 export KEYTIMEOUT=1
+
+export PATH="${PATH}:${HOME}/npm/bin"
