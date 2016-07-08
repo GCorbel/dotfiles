@@ -445,7 +445,7 @@ nmap gm g'
 " TMUX
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! TmuxRerun()
-  call Send_to_Tmux("!! \n")
+  call Send_to_Tmux("!! \n\n")
 endfunction
 
 nnoremap <F2> :call TmuxRerun()<cr>
