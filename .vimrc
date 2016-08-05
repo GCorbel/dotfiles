@@ -128,6 +128,7 @@ Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'christoomey/vim-system-copy'
 Plugin 'KabbAmine/zeavim.vim'
+Plugin 'thanthese/Tortoise-Typing'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -316,7 +317,7 @@ map <leader>gm :CtrlPClearCache<cr>:CtrlP app/models<cr>
 map <leader>gh :CtrlPClearCache<cr>:CtrlP app/helpers<cr>
 map <leader>gl :CtrlPClearCache<cr>:CtrlP lib<cr>
 map <leader>gp :CtrlPClearCache<cr>:CtrlP public<cr>
-map <leader>ga :CtrlPClearCache<cr>:CtrlP app<cr>
+map <leader>ga :CtrlPClearCache<cr>:CtrlP app,addon<cr>
 map <leader>gf :CtrlPClearCache<cr>:CtrlP spec/acceptances<cr>
 map <leader>gg :topleft 100 :split Gemfile<cr>
 map <leader>gt :CtrlPClearCache<cr>:CtrlPTag<cr>
@@ -445,7 +446,7 @@ nmap gm g'
 " TMUX
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! TmuxRerun()
-  call Send_to_Tmux("!! \n")
+ call Send_to_Tmux("!! \n")
 endfunction
 
 nnoremap <F2> :call TmuxRerun()<cr>
@@ -499,8 +500,8 @@ nmap <leader>z <Plug>ZVKeyDocset
 nmap gZ <Plug>ZVKeyDocset<CR>
 nmap gz <Plug>ZVMotion
 let g:zv_file_types = {
-            \   'ruby'           : 'ruby,rails',
-            \   'javascript'     : 'javascript,ember',
-            \   'python'         : 'python 3',
-            \   'help'           : 'vim'
-            \ }
+           \   'ruby'           : 'ruby,rails',
+           \   'javascript'     : 'javascript,ember',
+           \   'python'         : 'python 3',
+           \   'help'           : 'vim'
+           \ }
