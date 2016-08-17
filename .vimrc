@@ -92,7 +92,7 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'rking/ag.vim'
 Plugin 'vim-scripts/ctags.vim'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-scripts/ruby-matchit'
 Plugin 'jgdavey/tslime.vim'
 Plugin 'SirVer/ultisnips'
@@ -411,7 +411,12 @@ map gnt :NERDTreeToggle<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:syntastic_full_redraws=1
 map <leader>x :redraw!<cr>
-let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+let g:ctrlp_match_window = 'bottom,order:ttb'
+let g:ctrlp_switch_buffer = 0
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_use_caching = 0
+let g:ctrlp_user_command = ['ag %s --files-with-matches -g ""']
+let g:ctrlp_user_command += ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " EASYMOTION
