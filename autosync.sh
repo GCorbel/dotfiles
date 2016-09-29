@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Add it in a cron
+# crontab -e
+# * * * * * dougui cd ~/.dotfiles && sh autosync.sh
 
 #Pull from remote repo
 git pull
