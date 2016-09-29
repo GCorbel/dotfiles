@@ -111,3 +111,5 @@ zle -N zle-keymap-select
 export KEYTIMEOUT=1
 
 export PATH="${PATH}:${HOME}/npm/bin"
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
