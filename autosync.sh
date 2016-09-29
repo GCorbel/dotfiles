@@ -2,7 +2,7 @@
 
 # Add it in a cron
 # crontab -e
-# * * * * * sh autosync.sh
+# * * * * ~/.dotfiles/autosync.sh >> /tmp/autosync.log
 
 #Pull from remote repo
 git pull
