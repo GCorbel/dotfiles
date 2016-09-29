@@ -6,4 +6,4 @@
 git pull
 
 #Push changes
-git add . && git commit -m "Sync $(date --iso-8601=hours)" && git push
+git add -A && git commit -m "Sync $(date --iso-8601=hours)" && git push
