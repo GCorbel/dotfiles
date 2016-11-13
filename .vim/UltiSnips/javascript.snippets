@@ -3,15 +3,15 @@ import Route from 'ember-route';
 
 export default Route.extend({
   $1
-})
+});
 endsnippet
 
 snippet emc
-import Route from 'ember-route';
+import Component from 'ember-component';
 
-export default Route.extend({
+export default Component.extend({
   $1
-})
+});
 endsnippet
 
 snippet emm
@@ -21,12 +21,20 @@ export default DS.Model.extend({
 });
 endsnippet
 
+snippet this.get
+this.get('$2')$3
+endsnippet
+
 snippet get
 ${1:this}.get('$2')$3
 endsnippet
 
+snippet this.set
+this.set('$2', $3)$4
+endsnippet
+
 snippet set
-${1:this}.get('$2', '$3')$4
+${1:this}.set('$2', $3)$4
 endsnippet
 
 snippet this._super

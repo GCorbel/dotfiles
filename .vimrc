@@ -129,6 +129,7 @@ Plugin 'tpope/vim-unimpaired'
 Plugin 'christoomey/vim-system-copy'
 Plugin 'KabbAmine/zeavim.vim'
 Plugin 'thanthese/Tortoise-Typing'
+Plugin 'AndrewRadev/ember_tools.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -195,7 +196,8 @@ nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 " Can't be bothered to understand ESC vs <c-c> in insert mode
 imap <c-c> <esc>
-nnoremap <leader><leader> <c-^>
+nnoremap <Leader>w :w<cr>
+nnoremap <leader>i :b#<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
@@ -317,13 +319,15 @@ map <leader>gm :CtrlPClearCache<cr>:CtrlP app/models<cr>
 map <leader>gh :CtrlPClearCache<cr>:CtrlP app/helpers<cr>
 map <leader>gl :CtrlPClearCache<cr>:CtrlP lib<cr>
 map <leader>gp :CtrlPClearCache<cr>:CtrlP public<cr>
-map <leader>ga :CtrlPClearCache<cr>:CtrlP app,addon<cr>
+map <leader>ga :CtrlPClearCache<cr>:CtrlP app<cr>
 map <leader>gf :CtrlPClearCache<cr>:CtrlP spec/acceptances<cr>
 map <leader>gg :topleft 100 :split Gemfile<cr>
 map <leader>gt :CtrlPClearCache<cr>:CtrlPTag<cr>
 map <leader>f :CtrlPClearCache<cr>:CtrlP<cr>
 map <leader>F :CtrlPClearCache<cr>:CtrlP %%<cr>
 map <leader>gs :CtrlPClearCache<cr>:CtrlP spec<cr>
+map <leader>o :CtrlPClearCache<cr>:CtrlP %%<cr><cr>
+map <leader>ge :CtrlPClearCache<cr>:CtrlP tests<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " RUNNING TESTS
@@ -431,7 +435,6 @@ map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
 
 nmap s <Plug>(easymotion-s2)
-nmap t <Plug>(easymotion-t2)
 
 map <Leader>l <Plug>(easymotion-lineforward)
 map <Leader>j <Plug>(easymotion-j)
@@ -475,8 +478,6 @@ let g:mustache_abbreviations = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:fugitive_git_executable = 'LANG=en_US.UTF-8 git'
-
-nnoremap <Leader>w :w<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " YCM
