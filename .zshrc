@@ -47,7 +47,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git rails ruby docker docker-compose sudo)
+plugins=(git rails ruby docker docker-compose sudo git-extras)
 bindkey "^s" sudo-command-line
 
 source $ZSH/oh-my-zsh.sh
@@ -86,8 +86,14 @@ alias vi=nvim
 alias vim=nvim
 
 alias dc="docker-compose `if [ -f docker-compose.local.yml ]; then; echo "-f docker-compose.local.yml"; fi;` "
-alias dcr="dc run"
+alias dcr="dc run --rm"
 alias dcu="dc up"
+
+alias kf="dcr frontend"
+alias ka="dcr api"
+
+alias kfz="dcr frontend zsh"
+alias kaz="dcr api zsh"
 
 export PATH="/opt/android-studio/bin:${PATH}"
 export EDITOR=vim

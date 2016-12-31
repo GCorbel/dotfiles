@@ -75,6 +75,7 @@ set autoread
 set nu
 set rnu
 set colorcolumn=80
+set shortmess+=A
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vundle configuration
@@ -484,6 +485,7 @@ let g:fugitive_git_executable = 'LANG=en_US.UTF-8 git'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_filetype_specific_completion_to_disable = { '*': 1 }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " SYNTASTIC
