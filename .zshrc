@@ -7,7 +7,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
+ZSH_THEME="${ZSH_THEME:-robbyrussell}"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -95,6 +95,15 @@ alias ka="dcr api"
 alias kfz="dcr frontend zsh"
 alias kaz="dcr api zsh"
 
+alias gu="git undo"
+
+unalias gr
+alias gr="git reset"
+
+unalias gcm
+gam() { git add -A  && git commit -m "$*" }
+gcm() { git commit -m "$*" }
+
 export PATH="/opt/android-studio/bin:${PATH}"
 export EDITOR=vim
 
@@ -106,6 +115,8 @@ setxkbmap -option caps:escape
 bindkey "^R" history-incremental-search-backward
 bindkey -M vicmd '?' history-incremental-search-backward
 bindkey -M vicmd '/' history-incremental-search-forward
+bindkey "^[[D" vi-cmd-mode
+bindkey "^[[C" vi-cmd-mode
 
 function zle-line-init zle-keymap-select {
     VIM_PROMPT="%{$fg_bold[yellow]%} [% N]% %{$reset_color%}"
@@ -117,5 +128,10 @@ zle -N zle-keymap-select
 export KEYTIMEOUT=1
 
 export PATH="${PATH}:${HOME}/npm/bin"
+export PATH="${PATH}:${HOME}/.npm-global/bin"
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
+
+
+bindkey '^[[1~' beginning-of-line
+bindkey '^[[4~' end-of-line

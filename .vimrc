@@ -131,6 +131,9 @@ Plugin 'christoomey/vim-system-copy'
 Plugin 'KabbAmine/zeavim.vim'
 Plugin 'thanthese/Tortoise-Typing'
 Plugin 'AndrewRadev/ember_tools.vim'
+Plugin 'ngmy/vim-rubocop'
+Plugin 'michaeljsmith/vim-indent-object'
+Plugin 'stefandtw/quickfix-reflector.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -496,7 +499,17 @@ let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['eslint']
-let b:syntastic_javascript_eslint_exec = '/home/dougui/npm/bin/eslint'
+let g:syntastic_ruby_checkers = ['rubocop']
+let g:syntastic_coffee_checkers = ['coffeelint']
+let g:syntastic_javascript_eslint_exec = '/home/dougui/npm/bin/eslint'
+
+let local_eslint = finddir('node_modules', '.;') . '/.bin/eslint'
+if matchstr(local_eslint, "^\/\\w") == ''
+    let local_eslint = getcwd() . "/" . local_eslint
+endif
+if executable(local_eslint)
+    let g:syntastic_javascript_eslint_exec = local_eslint
+endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Zeavim
