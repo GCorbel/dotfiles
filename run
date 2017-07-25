@@ -1,0 +1,116 @@
+#!/usr/bin/ruby
+require 'yaml'
+require 'optparse'
+
+$full_command = $*.join(' ')
+
+options = {}
+
+opt_parser = OptionParser.new do |opt|
+  opt.banner = 'Usage: run bash'
+  opt.separator  ''
+  opt.separator  'Example:'
+  opt.separator  '  run --start'
+  opt.separator  '  run bash # or every command you want to run in the container'
+  opt.separator  '  run --stop'
+  opt.separator  '  run --remove'
+  opt.separator  ''
+  opt.separator  'You can set the project and the service in `.run.yml` file at the top level of the project.'
+  opt.separator  'The file have to be like this: '
+  opt.separator  '    run:'
+  opt.separator  '      service: app'
+  opt.separator  '      project: project'
+  opt.separator  ''
+  opt.separator  'Options'
+
+  opt.on('-p', '--project PROJECT', 'which project you want to run') do |value|
+    options[:project] = value
+  end
+
+  opt.on('-s', '--service SERVICE', 'which service have to be used') do |value|
+    options[:service] = value
+  end
+
+  opt.on('--rerun', 'stop the current container and exec the command') do
+    options[:rerun] = true
+  end
+
+  opt.on('--start', 'start a new container') do
+    options[:start] = true
+  end
+
+  opt.on('--stop', 'stop the container') do
+    options[:stop] = true
+  end
+
+  opt.on('--remove', 'stop and remove the container') do
+    options[:remove] = true
+  end
+end
+
+begin
+  opt_parser.parse!
+rescue OptionParser::InvalidOption => e
+end
+
+class Docker
+  attr_accessor :config
+
+  def initialize(config:)
+    @config = config
+  end
+
+  def exec
+    command = "docker exec -it #{project}_dev #{$full_command}"
+    system command
+    raise if $?.exitstatus == 1
+  end
+
+  def start
+    stop
+    system "docker-compose run -d --name #{project}_dev #{service} bundle exec spring server"
+  end
+
+  def stop
+    system "docker stop #{project}_dev"
+  end
+
+  def remove
+    system "docker rm #{project}_dev"
+  end
+
+  private
+
+  def project
+    config['project']
+  end
+
+  def service
+    config['service']
+  end
+end
+
+root = `git rev-parse --show-toplevel`.chomp
+config = YAML.load_file("#{root}/.run.yml")['run']
+config['service'] = options[:service] if options[:service]
+config['project'] = options[:project] if options[:project]
+
+docker = Docker.new(config: config)
+
+if options[:rerun]
+  docker.stop
+  docker.remove
+  docker.run
+  docker.exec
+elsif options[:stop]
+  docker.stop
+elsif options[:remove]
+  docker.stop
+  docker.remove
+elsif options[:start]
+  docker.start
+elsif ARGV.empty?
+  puts opt_parser
+else
+  docker.exec
+end

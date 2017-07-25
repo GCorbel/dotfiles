@@ -1,0 +1,98 @@
+RUN_FILE = '/tmp/.thyme-run'.freeze
+
+set :timer, 50 * 60            # 50 minute pomodoros
+set :timer_break, 10 * 60      # 10 minute breaks
+set :warning, 5 * 60           # show warning color in tmux at <5 minutes
+set :warning_color, 'red,bold' # warning color for tmux is red/bold
+set :break_color, 'yellow'       # break color is blue
+set :interval, 1               # refresh timer every 1 second
+set :tmux, true                # turn on tmux integration
+set :tmux_theme, '#[fg=mycolor,bg=mycolor]#[fg=%s]%s#[fg=mycolor,bg=mycolor]'
+
+# adds `-s --seconds num` option, which allows on the fly timer
+option :s, 'seconds num', 'run with custom seconds' do |num|
+  set :timer, num.to_i
+  Timer.new(self).run
+end
+
+option :f, 'force', 'force to stop' do
+  File.delete(RUN_FILE) if File.exist?(RUN_FILE)
+  Timer.new(self).stop
+end
+
+option :w, 'work [SECONDS]', 'run only the work time' do |num|
+  set :timer, num.to_i if num
+  ContinuousTimer.new.work(self, false, 'Time to take a break')
+end
+
+option :b, 'break [SECONDS]', 'run only the break time' do |num|
+  set :timer_break, num.to_i if num
+  ContinuousTimer.new.work(self, true, 'Time to work')
+end
+
+# execute hook before thyme program starts
+before(:all) do
+  `mplayer /usr/share/sounds/ubuntu/notifications/Blip.ogg &`
+end
+
+# execute hook before each pomodoro
+before do
+  `notify-send "Let's get started!"`
+end
+
+# execute hook after each pomodoro
+after do |seconds_left|
+  `notify-send "Thyme's Up!"` if seconds_left.zero?
+end
+
+# execute hook after thyme program quits
+after(:all) do
+  `mplayer /usr/share/sounds/ubuntu/notifications/Blip.ogg &`
+end
+
+require 'json'
+class MyThymePlugin
+  def initialize(thyme)
+  end
+
+  def before_all
+    @start_date = DateTime.now
+  end
+
+  def after_all
+    elapsed_time = ((DateTime.now - @start_date) * 24 * 60 * 60).to_i
+
+    session_name = `tmux display-message -p '#S'`.chomp
+    file_path = "#{ENV['HOME']}/.timer"
+    file = File.read(file_path)
+    data = JSON.parse(file)
+
+    data[session_name] ||= {}
+    if data[session_name][Date.today.to_s]
+      data[session_name][Date.today.to_s] += elapsed_time
+    else
+      data[session_name][Date.today.to_s] = elapsed_time
+    end
+
+    File.write(file_path, JSON.dump(data))
+  end
+end
+
+use MyThymePlugin
+
+class ContinuousTimer
+  def work(config, in_break, message = '')
+    File.delete(RUN_FILE) if File.exist?(RUN_FILE)
+    config.repeat = 1
+    config.break = in_break
+    begin
+      File.open(RUN_FILE, 'w') {}
+      Timer.new(config).run
+
+      File.open(Config::TMUX_FILE, 'w') { |file| file.write(message) }
+      sleep 1 while File.exist?(RUN_FILE)
+    ensure
+      config.send_to_plugin(:after_all)
+    end
+  end
+end

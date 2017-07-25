@@ -85,7 +85,7 @@ alias ti="tmuxinator start "
 alias vi=nvim
 alias vim=nvim
 
-alias dc="docker-compose `if [ -f docker-compose.local.yml ]; then; echo "-f docker-compose.local.yml"; fi;` "
+alias dc="docker-compose"
 alias dcr="dc run --rm"
 alias dcu="dc up"
 
@@ -94,6 +94,10 @@ alias ka="dcr api"
 
 alias kfz="dcr frontend zsh"
 alias kaz="dcr api zsh"
+
+alias r="run"
+alias rc="run rails c"
+alias rz="run zsh"
 
 alias gu="git undo"
 
@@ -132,6 +136,18 @@ export PATH="${PATH}:${HOME}/.npm-global/bin"
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
-
 bindkey '^[[1~' beginning-of-line
 bindkey '^[[4~' end-of-line
+
+#set history size
+export HISTSIZE=5000
+#save history after logout
+export SAVEHIST=5000
+#history file
+export HISTFILE=~/.zsh_history
+#append into history file
+setopt INC_APPEND_HISTORY
+#save only one command if 2 common are same and consistent
+setopt HIST_IGNORE_DUPS
+#add timestamp for each entry
+setopt EXTENDED_HISTORY

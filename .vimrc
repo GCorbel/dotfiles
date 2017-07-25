@@ -88,10 +88,11 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
+Plugin 'Shougo/deoplete.nvim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'tomtom/tcomment_vim'
-Plugin 'rking/ag.vim'
+Plugin 'mileszs/ack.vim'
 Plugin 'vim-scripts/ctags.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-scripts/ruby-matchit'
@@ -117,7 +118,8 @@ Plugin 'Lokaltog/vim-easymotion'
 Plugin 'bling/vim-airline'
 Plugin 'scrooloose/nerdtree'
 " Plugin 'kbarrette/mediummode'
-Plugin 'scrooloose/syntastic'
+" Plugin 'scrooloose/syntastic'
+Plugin 'neomake/neomake'
 Plugin 'szw/vim-tags'
 Plugin 'jplaut/vim-arduino-ino'
 Plugin 'mustache/vim-mustache-handlebars'
@@ -134,6 +136,10 @@ Plugin 'AndrewRadev/ember_tools.vim'
 Plugin 'ngmy/vim-rubocop'
 Plugin 'michaeljsmith/vim-indent-object'
 Plugin 'stefandtw/quickfix-reflector.vim'
+Plugin 'haya14busa/incsearch.vim'
+Plugin 'haya14busa/incsearch-easymotion.vim'
+Plugin 'haya14busa/incsearch-fuzzy.vim'
+Plugin 'mattn/ctrlp-mark'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -175,6 +181,8 @@ augroup vimrcEx
 
   " *.md is markdown
   autocmd! BufNewFile,BufRead *.md setlocal ft=
+
+  autocmd BufWritePost,BufRead * Neomake
 augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -332,6 +340,9 @@ map <leader>F :CtrlPClearCache<cr>:CtrlP %%<cr>
 map <leader>gs :CtrlPClearCache<cr>:CtrlP spec<cr>
 map <leader>o :CtrlPClearCache<cr>:CtrlP %%<cr><cr>
 map <leader>ge :CtrlPClearCache<cr>:CtrlP tests<cr>
+map <leader>v <C-]>
+map <leader>c <C-T>
+map <leader>m :call ctrlp#mark#command()<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " RUNNING TESTS
@@ -381,9 +392,9 @@ function! RunTests(filename)
       :w
     end
     if filereadable("bin/rspec")
-      call Send_to_Tmux("bin/rspec --color " . a:filename . "\n")
+      call Send_to_Tmux("r bin/rspec --color " . a:filename . "\n")
     else
-      call Send_to_Tmux("bundle exec rspec --color " . a:filename . "\n")
+      call Send_to_Tmux("r bundle exec rspec --color " . a:filename . "\n")
     end
 endfunction
 
@@ -402,7 +413,7 @@ let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
 :ca W w
 :ca Q q
 :ca E e
-:ca ag Ag
+:ca ag Ack!
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " BROWSER RELOAD
@@ -427,25 +438,56 @@ let g:ctrlp_user_command = ['ag %s --files-with-matches -g ""']
 let g:ctrlp_user_command += ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" EASYMOTION
+" easymotion
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map  / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
 
-" These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
-" Without these mappings, `n` & `N` works fine. (These mappings just provide
-" different highlight method and have some other features )
-map  n <Plug>(easymotion-next)
-map  N <Plug>(easymotion-prev)
+nmap s <Plug>(easymotion-overwin-f2)
+map <Leader>W <Plug>(easymotion-bd-W)
+nmap <Leader>W <Plug>(easymotion-overwin-w)
 
-nmap s <Plug>(easymotion-s2)
+map <Leader><right> <Plug>(easymotion-lineforward)
+map <Leader><down> <Plug>(easymotion-j)
+map <Leader><up> <Plug>(easymotion-k)
+map <Leader><left> <Plug>(easymotion-linebackward)
 
-map <Leader>l <Plug>(easymotion-lineforward)
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
-map <Leader>h <Plug>(easymotion-linebackward)
+function! s:config_testfuzzymotion(...) abort
+  return extend(copy({
+  \   'converters': [incsearch#config#fuzzyword#converter()],
+  \   'modules': [incsearch#config#easymotion#module({'overwin': 1})],
+  \   'keymap': {"\<CR>": '<Over>(easymotion)'},
+  \   'is_expr': 0,
+  \   'is_stay': 1
+  \ }), get(a:, 1, {}))
+endfunction
 
-let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
+function! ReplaceUnderCursor()
+  let word = expand('<cword>')
+  let new_name = input('Replace with: ', '', 'file')
+  exec ':%s/\<'.word.'\>/'.new_name.'/ge'
+  exec "normal \<C-o>"
+endfunction
+
+noremap <leader>r :call ReplaceUnderCursor()<cr>
+noremap <leader><leader> :CtrlPBufTag<cr>
+
+map / <Plug>(incsearch-easymotion-/)
+map ? <Plug>(incsearch-easymotion-?)
+map g/ <Plug>(incsearch-easymotion-stay)
+
+function! s:config_easyfuzzymotion(...) abort
+  return extend(copy({
+  \   'converters': [incsearch#config#fuzzy#converter()],
+  \   'modules': [incsearch#config#easymotion#module()],
+  \   'keymap': {"\<CR>": '<Over>(easymotion)'},
+  \   'is_expr': 0,
+  \   'is_stay': 0
+  \ }), get(a:, 1, {}))
+endfunction
+
+noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
+
+let g:easyMotion_startofline = 0 " keep cursor column when JK motion
+let g:EasyMotion_leader_key = 0
 
 set mouse=c
 
@@ -458,7 +500,7 @@ nmap gm g'
 " TMUX
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! TmuxRerun()
- call Send_to_Tmux("!! \n\n")
+ call Send_to_Tmux("!!\n\n")
 endfunction
 
 nnoremap <F2> :call TmuxRerun()<cr>
@@ -484,11 +526,12 @@ let g:mustache_abbreviations = 1
 let g:fugitive_git_executable = 'LANG=en_US.UTF-8 git'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" YCM
+" deoplete
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_filetype_specific_completion_to_disable = { '*': 1 }
+" let g:ycm_collect_identifiers_from_comments_and_strings = 1
+" let g:ycm_filetype_specific_completion_to_disable = { '*': 1 }
+let g:deoplete#enable_at_startup = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " SYNTASTIC
@@ -526,3 +569,14 @@ let g:zv_file_types = {
            \   'python'         : 'python 3',
            \   'help'           : 'vim'
            \ }
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ag/Ack
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
+nnoremap <leader>s :Ack!<Space>
+nnoremap <leader>S :Ack! <C-r><C-w><Space>
