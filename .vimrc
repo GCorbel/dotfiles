@@ -76,6 +76,7 @@ set nu
 set rnu
 set colorcolumn=80
 set shortmess+=A
+set encoding=utf-8
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vundle configuration
@@ -89,12 +90,10 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " Plugin 'Valloric/YouCompleteMe'
-Plugin 'Shougo/deoplete.nvim'
-Plugin 'christoomey/vim-tmux-navigator'
+" Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'mileszs/ack.vim'
-Plugin 'vim-scripts/ctags.vim'
-Plugin 'ctrlpvim/ctrlp.vim'
+" Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-scripts/ruby-matchit'
 Plugin 'jgdavey/tslime.vim'
 Plugin 'SirVer/ultisnips'
@@ -115,15 +114,14 @@ Plugin 'benmills/vimux'
 Plugin 'tpope/vim-bundler'
 Plugin 'lordm/vim-browser-reload-linux'
 Plugin 'Lokaltog/vim-easymotion'
-Plugin 'bling/vim-airline'
+" Plugin 'bling/vim-airline'
 Plugin 'scrooloose/nerdtree'
 " Plugin 'kbarrette/mediummode'
 " Plugin 'scrooloose/syntastic'
 Plugin 'neomake/neomake'
-Plugin 'szw/vim-tags'
 Plugin 'jplaut/vim-arduino-ino'
 Plugin 'mustache/vim-mustache-handlebars'
-Plugin 'JarrodCTaylor/vim-ember-cli-test-runner'
+" Plugin 'JarrodCTaylor/vim-ember-cli-test-runner'
 " Plugin 'jiangmiao/auto-pairs'
 Plugin 'jaymiejones86/vim-capybara'
 Plugin 'kana/vim-textobj-entire'
@@ -131,8 +129,9 @@ Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'christoomey/vim-system-copy'
 Plugin 'KabbAmine/zeavim.vim'
-Plugin 'thanthese/Tortoise-Typing'
+" Plugin 'thanthese/Tortoise-Typing'
 Plugin 'AndrewRadev/ember_tools.vim'
+Plugin 'galooshi/vim-import-js'
 Plugin 'ngmy/vim-rubocop'
 Plugin 'michaeljsmith/vim-indent-object'
 Plugin 'stefandtw/quickfix-reflector.vim'
@@ -140,6 +139,21 @@ Plugin 'haya14busa/incsearch.vim'
 Plugin 'haya14busa/incsearch-easymotion.vim'
 Plugin 'haya14busa/incsearch-fuzzy.vim'
 Plugin 'mattn/ctrlp-mark'
+Plugin 'morhetz/gruvbox'
+" Plugin 'wellle/tmux-complete.vim'
+Plugin 'kassio/neoterm'
+Plugin 'BurningEther/nvimux'
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
+Plugin 'xtal8/traces.vim'
+Plugin 'Shougo/deoplete.nvim'
+Plugin 'roxma/vim-hug-neovim-rpc'
+Plugin 'roxma/nvim-yarp'
+" Plugin 'ternjs/tern_for_vim'
+" Plugin 'carlitux/deoplete-ternjs'
+" Plugin 'uplus/deoplete-solargraph'
+" Plugin 'natebosch/vim-lsc'
+Plugin 'autozimu/LanguageClient-neovim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -148,6 +162,7 @@ filetype plugin indent on    " required
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CUSTOM AUTOCMDS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 autocmd BufWritePre * :%s/\s\+$//e
 augroup vimrcEx
   " Clear all autocmds in the group
@@ -161,55 +176,54 @@ augroup vimrcEx
 
   "for ruby, autoindent with two spaces, always expand tabs
   autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
-  autocmd FileType python set sw=4 sts=4 et
+  autocmd FileType python set sw=2 sts=2 et
 
   autocmd! BufRead,BufNewFile *.sass setfiletype sass
 
   autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:&gt;
   autocmd BufRead *.markdown  set ai formatoptions=tcroqn2 comments=n:&gt;
 
-  " Indent p tags
-  " autocmd FileType html,eruby if g:html_indent_tags !~ '\\|p\>' | let g:html_indent_tags .= '\|p\|li\|dt\|dd' | endif
-
   " Don't syntax highlight markdown because it's often wrong
   autocmd! FileType mkd setlocal syn=off
-
-  " Leave the return key alone when in command line windows, since it's used
-  " to run commands there.
-  autocmd! CmdwinEnter * :unmap <cr>
-  autocmd! CmdwinLeave * :call MapCR()
 
   " *.md is markdown
   autocmd! BufNewFile,BufRead *.md setlocal ft=
 
   autocmd BufWritePost,BufRead * Neomake
+  autocmd BufWritePost * :call system('ctags -Ra -f .git/tags --languages=ruby --exclude=.git --exclude=log ' . expand("%") . ' &')
 augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " COLOR
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-:set t_Co=256 " 256 colors
+" :set t_Co=256 " 256 colors
 :set background=dark
-:color jellybeans
+" :set termguicolors
+let g:gruvbox_contrast_light='hard'
+let g:gruvbox_contrast_dark='hard'
+" let g:solarized_termcolors=256
+:colorscheme gruvbox
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUS LINE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-:set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
+:set statusline=%<%{pathshorten(expand('%:f'))\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC KEY MAPS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader>y "*y
+map <leader>y "+y
+map <leader>p "+p
 " Move around splits with <c-hjkl>
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
+" nnoremap <c-right> <c-w>h
+" nnoremap <c-down> <c-w>j
+" nnoremap <c-up> <c-w>k
+" nnoremap <c-left> <c-w>l
+" nnoremap <c-w>s :split<cr>
 " Can't be bothered to understand ESC vs <c-c> in insert mode
 imap <c-c> <esc>
 nnoremap <Leader>w :w<cr>
-nnoremap <leader>i :b#<cr>
+cnoremap w!! w !sudo tee > /dev/null %
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
@@ -220,11 +234,11 @@ function! InsertTabWrapper()
     if !col || getline('.')[col - 1] !~ '\k'
         return "\<tab>"
     else
-        return "\<c-p>"
+        return "\<c-n>"
     endif
 endfunction
 inoremap <tab> <c-r>=InsertTabWrapper()<cr>
-inoremap <s-tab> <c-n>
+inoremap <s-tab> <c-p>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " OPEN FILES IN DIRECTORY OF CURRENT FILE
@@ -248,26 +262,65 @@ endfunction
 map <leader>n :call RenameFile()<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" MAPS TO JUMP TO SPECIFIC COMMAND-T TARGETS AND FILES
+" PROMOTE VARIABLE TO RSPEC LET
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader>gr :topleft :split config/routes.rb<cr>
-function! ShowRoutes()
-  " Requires 'scratch' plugin
-  :topleft 100 :split __Routes__
-  " Make sure Vim doesn't write __Routes__ as a file
-  :set buftype=nofile
-  " Delete everything
-  :normal 1GdG
-  " Put routes output in buffer
-  :0r! rake -s routes
-  " Size window to number of lines (1 plus rake output length)
-  :exec ":normal " . line("$") . _ "
-  " Move cursor to bottom
-  :normal 1GG
-  " Delete empty trailing line
-  :normal dd
+function! PromoteToLet()
+  :normal! dd
+  " :exec '?^\s*it\>'
+  :normal! P
+  :.s/\(\w\+\) = \(.*\)$/let(:\1) { \2 }/
+  :normal ==
 endfunction
-map <leader>gR :call ShowRoutes()<cr>
+:command! PromoteToLet :call PromoteToLet()
+:map <leader>rp :PromoteToLet<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" EXTRACT VARIABLE (SKETCHY)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! ExtractVariable()
+    let name = input("Variable name: ")
+    if name == ''
+        return
+    endif
+    " Enter visual mode (not sure why this is needed since we're already in
+    " visual mode anyway)
+    normal! gv
+
+    " Replace selected text with the variable name
+    exec "normal c" . name
+    " Define the variable on the line above
+    exec "normal! O" . name . " = "
+    " Paste the original selected text to be the variable value
+    normal! $p
+endfunction
+vnoremap <leader>rv :call ExtractVariable()<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" INLINE VARIABLE (SKETCHY)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! InlineVariable()
+    " Copy the variable under the cursor into the 'a' register
+    :let l:tmp_a = @a
+    :normal "ayiw
+    " Delete variable and equals sign
+    :normal 2daW
+    " Delete the expression into the 'b' register
+    :let l:tmp_b = @b
+    :normal "bd$
+    " Delete the remnants of the line
+    :normal dd
+    " Go to the end of the previous line so we can start our search for the
+    " usage of the variable to replace. Doing '0' instead of 'k$' doesn't
+    " work; I'm not sure why.
+    normal k$
+    " Find the next occurence of the variable
+    exec '/\<' . @a . '\>'
+    " Replace that occurence with the text we yanked
+    exec ':.s/\<' . @a . '\>/' . escape(@b, "/")
+    :let @a = l:tmp_a
+    :let @b = l:tmp_b
+endfunction
+nnoremap <leader>ri :call InlineVariable()<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " SWITCH BETWEEN TEST AND PRODUCTION CODE
@@ -281,7 +334,7 @@ function! AlternateForCurrentFile()
   let new_file = current_file
   let in_spec = match(current_file, '^spec/') != -1
   let going_to_spec = !in_spec
-  let in_app = match(current_file, '\<app\>') != -1
+  let in_app = (match(current_file, '\<controllers\>') != -1 || match(current_file, '\<models\>') != -1 || match(current_file, '\<workers\>') != -1 || match(current_file, '\<views\>') != -1 || match(current_file, '\<helpers\>') != -1) || match(current_file, '\<services\>') != -1 && match(current_file, '\<lib\>') == -1
   if going_to_spec
     if in_app
       let new_file = substitute(new_file, '^app/', '', '')
@@ -291,7 +344,7 @@ function! AlternateForCurrentFile()
   else
     let new_file = substitute(new_file, '_spec\.rb$', '.rb', '')
     let new_file = substitute(new_file, '^spec/', '', '')
-    if in_spec
+    if in_app
       let new_file = 'app/' . new_file
     end
   endif
@@ -325,24 +378,23 @@ function! ShowRoutes()
   :normal dd
 endfunction
 map <leader>gR :call ShowRoutes()<cr>
-map <leader>gv :CtrlPClearCache<cr>:CtrlP app/views<cr>
-map <leader>gc :CtrlPClearCache<cr>:CtrlP app/controllers<cr>
-map <leader>gm :CtrlPClearCache<cr>:CtrlP app/models<cr>
-map <leader>gh :CtrlPClearCache<cr>:CtrlP app/helpers<cr>
-map <leader>gl :CtrlPClearCache<cr>:CtrlP lib<cr>
-map <leader>gp :CtrlPClearCache<cr>:CtrlP public<cr>
-map <leader>ga :CtrlPClearCache<cr>:CtrlP app<cr>
-map <leader>gf :CtrlPClearCache<cr>:CtrlP spec/acceptances<cr>
+map <leader>gv :Files app/views<cr>
+map <leader>gc :Files app/controllers<cr>
+map <leader>gm :Files app/models<cr>
+map <leader>gh :Files app/helpers<cr>
+map <leader>gl :Files lib<cr>
+map <leader>gp :Files public<cr>
+map <leader>ga :Files app<cr>
 map <leader>gg :topleft 100 :split Gemfile<cr>
-map <leader>gt :CtrlPClearCache<cr>:CtrlPTag<cr>
-map <leader>f :CtrlPClearCache<cr>:CtrlP<cr>
-map <leader>F :CtrlPClearCache<cr>:CtrlP %%<cr>
-map <leader>gs :CtrlPClearCache<cr>:CtrlP spec<cr>
-map <leader>o :CtrlPClearCache<cr>:CtrlP %%<cr><cr>
-map <leader>ge :CtrlPClearCache<cr>:CtrlP tests<cr>
-map <leader>v <C-]>
+map <leader>gt :Tags<cr>
+map <leader>gs :Files spec<cr>
+map <leader>ge :Files tests<cr>!pages<space>
+map <leader>v :Tags ^<C-r><C-w> '.<C-r>=expand('%:e')<cr><cr>
 map <leader>c <C-T>
-map <leader>m :call ctrlp#mark#command()<cr>
+map <leader>m :GFiles <C-r>=join(argv(), ' ')<cr><cr>
+map <leader>b :Buffers<cr>
+map <leader>f :GFiles<cr>
+map <leader>F :GFiles %%<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " RUNNING TESTS
@@ -391,12 +443,29 @@ function! RunTests(filename)
     if expand("%") != ""
       :w
     end
-    if filereadable("bin/rspec")
-      call Send_to_Tmux("r bin/rspec --color " . a:filename . "\n")
-    else
-      call Send_to_Tmux("r bundle exec rspec --color " . a:filename . "\n")
-    end
+
+    :execute "T rspec --color " . a:filename
 endfunction
+
+function! JumpBack()
+  let l:cfile=expand('%')
+  let l:nfile=l:cfile
+  while l:cfile == l:nfile
+    execute 'normal ' . 1 . "\<c-o>"
+    let l:nfile=expand('%')
+endwhile
+endfunction
+noremap _ :call JumpBack()<cr>
+
+function! JumpForward()
+  let l:cfile=expand('%')
+  let l:nfile=l:cfile
+  while l:cfile == l:nfile
+    execute 'normal ' . 1 . "\<c-i>"
+    let l:nfile=expand('%')
+  endwhile
+endfunction
+noremap - :call JumpForward()<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ULTISNIPS
@@ -404,6 +473,7 @@ endfunction
 let g:UltiSnipsExpandTrigger = '<c-l>'
 let g:UltiSnipsJumpForwardTrigger = '<c-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
+let g:UltiSnipsSnippetDirectories = ['~/.vim/UltiSnips', 'UltiSnips']
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ALIASES
@@ -418,24 +488,12 @@ let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " BROWSER RELOAD
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader>r :w<cr>:FirefoxReload<cr>:ChromiumReload<cr>
+map <leader>l :w<cr>:!touch /tmp/touch.js<cr><cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NERD TREE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 map gnt :NERDTreeToggle<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" CTRLP
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:syntastic_full_redraws=1
-map <leader>x :redraw!<cr>
-let g:ctrlp_match_window = 'bottom,order:ttb'
-let g:ctrlp_switch_buffer = 0
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_use_caching = 0
-let g:ctrlp_user_command = ['ag %s --files-with-matches -g ""']
-let g:ctrlp_user_command += ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " easymotion
@@ -450,43 +508,12 @@ map <Leader><down> <Plug>(easymotion-j)
 map <Leader><up> <Plug>(easymotion-k)
 map <Leader><left> <Plug>(easymotion-linebackward)
 
-function! s:config_testfuzzymotion(...) abort
-  return extend(copy({
-  \   'converters': [incsearch#config#fuzzyword#converter()],
-  \   'modules': [incsearch#config#easymotion#module({'overwin': 1})],
-  \   'keymap': {"\<CR>": '<Over>(easymotion)'},
-  \   'is_expr': 0,
-  \   'is_stay': 1
-  \ }), get(a:, 1, {}))
-endfunction
+noremap <leader><leader> :BTags<cr>
 
-function! ReplaceUnderCursor()
-  let word = expand('<cword>')
-  let new_name = input('Replace with: ', '', 'file')
-  exec ':%s/\<'.word.'\>/'.new_name.'/ge'
-  exec "normal \<C-o>"
-endfunction
+map <leader>/ <Plug>(incsearch-easymotion-/)
+map <leader>? <Plug>(incsearch-easymotion-?)
 
-noremap <leader>r :call ReplaceUnderCursor()<cr>
-noremap <leader><leader> :CtrlPBufTag<cr>
-
-map / <Plug>(incsearch-easymotion-/)
-map ? <Plug>(incsearch-easymotion-?)
-map g/ <Plug>(incsearch-easymotion-stay)
-
-function! s:config_easyfuzzymotion(...) abort
-  return extend(copy({
-  \   'converters': [incsearch#config#fuzzy#converter()],
-  \   'modules': [incsearch#config#easymotion#module()],
-  \   'keymap': {"\<CR>": '<Over>(easymotion)'},
-  \   'is_expr': 0,
-  \   'is_stay': 0
-  \ }), get(a:, 1, {}))
-endfunction
-
-noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
-
-let g:easyMotion_startofline = 0 " keep cursor column when JK motion
+let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 let g:EasyMotion_leader_key = 0
 
 set mouse=c
@@ -494,17 +521,23 @@ set mouse=c
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MARKS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nmap gm g'
+function! Jump2()
+  echo "Mark : "
+  let mark = nr2char(getchar())
+  exec "norm! '" . mark . "'\""
+endfunc
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" TMUX
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! TmuxRerun()
- call Send_to_Tmux("!!\n\n")
-endfunction
+" map <leader>m :call Jump2()<cr>
 
-nnoremap <F2> :call TmuxRerun()<cr>
-
+" """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" " TMUX
+" """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" function! TmuxRerun()
+"  call Send_to_Tmux("!!\n\n")
+" endfunction
+"
+" nnoremap <F2> :call TmuxRerun()<cr>
+"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ZOOM
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -525,17 +558,18 @@ let g:mustache_abbreviations = 1
 
 let g:fugitive_git_executable = 'LANG=en_US.UTF-8 git'
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " deoplete
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" let g:ycm_collect_identifiers_from_comments_and_strings = 1
-" let g:ycm_filetype_specific_completion_to_disable = { '*': 1 }
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_filetype_specific_completion_to_disable = { '*': 1 }
 let g:deoplete#enable_at_startup = 1
+let b:deoplete_keyword_patterns = '[a-zA-Z_0-9]\k*'
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " SYNTASTIC
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:syntastic_always_populate_loc_list = 0
 let g:syntastic_auto_loc_list = 0
@@ -560,7 +594,7 @@ endif
 
 nmap gzz <Plug>Zeavim
 vmap gzz <Plug>ZVVisSelection
-nmap <leader>z <Plug>ZVKeyDocset
+" nmap <leader>z <Plug>ZVKeyDocset
 nmap gZ <Plug>ZVKeyDocset<CR>
 nmap gz <Plug>ZVMotion
 let g:zv_file_types = {
@@ -578,5 +612,107 @@ if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
-nnoremap <leader>s :Ack!<Space>
-nnoremap <leader>S :Ack! <C-r><C-w><Space>
+nnoremap <leader>s :Ag<space>
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Terminal
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+tmap <C-left> <C-w>h
+tmap <C-down> <C-w>j
+tmap <C-up> <C-w>k
+tmap <C-right> <C-w>l
+noremap <C-left> <C-w>h
+noremap <C-down> <C-w>j
+noremap <C-up> <C-w>k
+noremap <C-right> <C-w>l
+inoremap <C-left> <Esc><C-w>h
+inoremap <C-down> <Esc><C-w>j
+inoremap <C-up> <Esc><C-w>k
+inoremap <C-right> <Esc><C-w>l
+
+tnoremap <C-t> <C-w>:Buffers '/usr/bin \<bar> 'neoterm '<CR>
+map <c-t> :Buffers '/usr/bin \<bar> 'neoterm '<CR>
+
+" Quickly create a new terminal in a vertical split
+tnoremap <C-q> <C-w>:term ++curwin<CR>
+noremap <C-q> :term ++curwin<CR>
+inoremap <C-q> <esc>:term ++curwin<CR>
+
+tnoremap <C-a> <C-w>:Tnew<CR>
+noremap <C-a> :Tnew<CR>
+inoremap <C-a> <esc>:Tnew<CR>
+
+tnoremap <C-g> <C-w>:hide<cr>
+
+autocmd BufLeave !/usr/* setlocal nonumber norelativenumber
+autocmd BufEnter !/usr/* setlocal nonumber norelativenumber
+
+tnoremap <C-n> <C-w>:file <C-r>=expand('%')<cr><space>
+
+tnoremap <C-p> <C-w>""
+tnoremap <C-w><C-w> <C-w>N
+
+set shell=/usr/bin/zsh
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" FZF
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set rtp+=~/.fzf
+let $FZF_DEFAULT_OPTS .= ' --no-height'
+
+let g:fzf_tags_command = 'ctags -Ra -f .git/tags --languages=ruby --exclude=.git --exclude=log'
+" let g:tern_map_keys=1
+
+" let g:lsc_auto_map = v:true
+" let g:lsc_enable_autocomplete = v:true
+" " let g:lsc_server_commands = { 'ruby': 'localhost:7658' }
+"
+" " let g:lsc_server_commands = { 'javascript': 'localhost:2089' }
+" let g:lsc_server_commands = { 'javascript': 'javascript-typescript-stdio -t -l /tmp/javascript-typescript.log' }
+" " let g:lsc_server_commands = {
+" "      \ 'javascript': 'localhost:2089',
+" "      \ 'ruby': {
+" "      \    'command': 'localhost:7658',
+" "      \    'message_hooks': {
+" "      \        'initialize': {
+" "      \            'rootUri': {method, params ->
+" "      \                          lsc#uri#documentUri('/tmp')},
+" "      \        },
+" "      \    },
+" "      \  },
+" "      \}
+" "
+
+" set omnifunc=LanguageClient#complete
+" set completefunc=LanguageClient#complete
+"
+" " " let g:lsc_auto_map = {
+" " "     \ 'GoToDefinition': '<C-]>',
+" " "     \ 'FindReferences': 'gr',
+" " "     \ 'NextReference': '<C-n>',
+" " "     \ 'PreviousReference': '<C-p>',
+" " "     \ 'FindImplementations': 'gI',
+" " "     \ 'FindCodeActions': 'ga',
+" " "     \ 'DocumentSymbol': 'go',
+" " "     \ 'WorkspaceSymbol': 'gS',
+" " "     \ 'ShowHover': 'K',
+" " "     \ 'Completion': 'completefunc',
+" " "     \}
+" "
+"
+" " " let g:lsc_trace_level = 'verbose'
+" "
+" " set completeopt-=preview
+
+let g:LanguageClient_serverCommands = {
+    \ 'javascript': ['javascript-typescript-stdio'],
+    \ 'ruby': ['tcp://127.0.0.1:7658'],
+    \ }
+
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>

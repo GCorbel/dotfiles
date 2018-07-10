@@ -1,0 +1,75 @@
+snippet expectpagecontent "expect(page).to have_content('')" !b
+expect(page).to have_content('${1}')
+endsnippet
+
+snippet feature "feature" !b
+require 'rails_helper'
+
+feature '${1:`!v substitute(substitute(vim_snippets#Filename(), '_spec$', '', ''), '\(_\|^\)\(.\)', '\u\2', 'g')`}' do
+  scenario '${2}' do
+    ${3}
+  end
+end
+endsnippet
+
+snippet clac "class Controller < ApplicationController" !b
+class ${1:`!v substitute(substitute(vim_snippets#Filename(), '_controller$', '', ''), '\(_\|^\)\(.\)', '\u\2', 'g')`}Controller < ApplicationController
+  ${2}
+end
+endsnippet
+
+snippet clam "class Model" !b
+class ${1:`!v substitute(substitute(vim_snippets#Filename(), '_model$', '', ''), '\(_\|^\)\(.\)', '\u\2', 'g')`} < ApplicationRecord
+  ${2}
+end
+endsnippet
+
+snippet class "class MaClass" !b
+class ${1:`!v substitute(vim_snippets#Filename(), '\(_\|^\)\(.\)', '\u\2', 'g')`}
+  ${2}
+end
+endsnippet
+
+snippet Fac "FactoryGirl.define do..end" !b
+FactoryGirl.define do
+  factory :${1:`!v tolower(substitute(substitute(vim_snippets#Filename(), '_factory$', '', ''), '\(_\|^\)\(.\)', '\u\2', 'g'))`} do
+    $0
+  end
+end
+endsnippet
+
+snippet fac "factory :name do..end" !b
+factory :${1:name} do
+  $0
+end
+endsnippet
+
+snippet faca "factory :name with aliases" !b
+factory :${1:name}, ${2:aliases}: [:${3:alias}] do
+  $0
+end
+endsnippet
+
+snippet ign "ignore FactoryGirl" !b
+ignore do
+  $0
+end
+endsnippet
+
+snippet trait "trait :name do..end" !b
+trait :${1:name} do
+  $0
+end
+endsnippet
+
+snippet traita "trait with after" !b
+trait :${1:name} do
+  after :${2:create} do |${3:assoc_obj}|
+    FactoryGirl.create_list :${4:factory}, ${5:num_created}, ${6:assoc}: ${3:assoc_obj}
+  end
+end
+endsnippet
+
+snippet ppc "pp page.driver.console_messages"
+pp page.driver.console_messages
+endsnippet

@@ -21,11 +21,11 @@ export default DS.Model.extend({
 });
 endsnippet
 
-snippet this.get
+snippet this.get "this.get" w
 this.get('$2')$3
 endsnippet
 
-snippet get
+snippet get "get" w
 ${1:this}.get('$2')$3
 endsnippet
 
@@ -39,4 +39,12 @@ endsnippet
 
 snippet this._super
 this._super(...arguments);
+endsnippet
+
+snippet cwai
+console.log("`!v @% . ':' . line('.')`");
+endsnippet
+
+snippet cl "console.log" b
+console.log(${1:${VISUAL:"value"}});
 endsnippet

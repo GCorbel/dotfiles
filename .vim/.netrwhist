@@ -1,7 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_cnt =6
 let g:netrw_dirhist_1='/usr/share/X11/xorg.conf.d'
 let g:netrw_dirhist_2='/usr/share/X11'
 let g:netrw_dirhist_3='/usr/share/X11/xorg.conf.d'
 let g:netrw_dirhist_4='/home/dougui/.vim'
 let g:netrw_dirhist_5='/home/dougui/workspace/tiny/api/app/serializers'
+let g:netrw_dirhist_6='/home/dougui/.tmux'

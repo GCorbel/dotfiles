@@ -62,13 +62,22 @@ class Docker
 
   def exec
     command = "docker exec -it #{project}_dev #{$full_command}"
+    system "docker ps | grep #{project}_dev >/dev/null"
+    start if $?.exitstatus == 1
+
     system command
     raise if $?.exitstatus == 1
   end
 
   def start
-    stop
-    system "docker-compose run -d --name #{project}_dev #{service} bundle exec spring server"
+    command = config['start_command'] % [project, service]
+    system %Q{
+      if docker ps -a | grep #{project}_dev >/dev/null ; then
+        docker start #{project}_dev >/dev/null
+      else
+        #{command}
+      fi
+    }
   end
 
   def stop
@@ -94,6 +103,7 @@ root = `git rev-parse --show-toplevel`.chomp
 config = YAML.load_file("#{root}/.run.yml")['run']
 config['service'] = options[:service] if options[:service]
 config['project'] = options[:project] if options[:project]
+config['start_command'] ||= "docker-compose run -d --name %s_dev %s bundle exec spring server"
 
 docker = Docker.new(config: config)
 

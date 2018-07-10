@@ -1,5 +1,13 @@
 snippet wtf
 puts "################################################################################"
-pp ${0:"#{__FILE__} : #{caller_line}"}
+pp ${0:caller_locations(0, 1).first}
 puts "################################################################################"
+endsnippet
+
+snippet app
+ap "#{__FILE__}:#{__LINE__}##{__method__} | #{${0}}"
+endsnippet
+
+snippet ppp
+pp "#{__FILE__}:#{__LINE__}##{__method__} | #{${0}}"
 endsnippet
